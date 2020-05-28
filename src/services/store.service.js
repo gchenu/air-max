@@ -13,3 +13,12 @@ export const getAllProducts = () => {
         .then(res => res.json())
         .catch(err => console.log(err))
 }
+
+export const createOrder = (opts) => {
+  return fetch(`${HOST}/order`, {
+    method: 'post',
+    body: JSON.stringify({products: opts})
+  })
+      .then(res => res.json())
+      .catch(err => console.log(err))
+}

@@ -1,6 +1,8 @@
 import React from 'react';
+import {Button} from 'react-bootstrap';
 
-const Header = () => (
+const Header = ({onClickCart}) => {
+  return(
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -14,15 +16,10 @@ const Header = () => (
                 <li className="nav-item">
                     <a className="nav-link">Articles</a>
                 </li>
-                <li className="nav-item">
-                    <a className="nav-link disabled">Disabled</a>
-                </li>
             </ul>
-            
-            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Cart</button>
-            
+            <Button onClick={() => onClickCart(true)}> Cart </Button>
         </div>
     </nav>
-);
+)};
 
 export default Header;

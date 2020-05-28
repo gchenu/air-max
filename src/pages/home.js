@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Layout from '../components/layout';
 import Card from '../components/card';
+import Cart from '../components/cart';
+import Header from '../components/header';
 import {getStore, getAllProducts} from '../services/store.service';
 
 class Home extends Component {
@@ -9,7 +10,9 @@ class Home extends Component {
         super(props);
         this.state = {
             products: [],
-            isLoading: true
+            isLoading: true,
+            cart: [],
+            isVisible: false
         };
     }
 
@@ -19,25 +22,40 @@ class Home extends Component {
         this.setState({ products: response.products, isLoading: false});
     }
 
+    setModalVisible = (visible) => this.setState({isVisible: visible});
+
+    addToCart = (product) => this.setState(state => ({cart: [...state.cart, product]}));
+
     render() {
-        const {products, isLoading} = this.state;
+        const {products, isLoading, cart, isVisible} = this.state;
         return(
-            <Layout>
-                <div className='d-flex justify-content-center my-5'>
-                    <h1>CCI NIKE STORE</h1>
+            <div>
+                <Header onClickCart={this.setModalVisible} />
+                <div className='container'>
+                  <div className='d-flex justify-content-center my-5'>
+                      <h1>CCI NIKE STORE</h1>
+                  </div>
+                  <div className="d-flex flex-wrap justify-content-center">
+                      {!isLoading && products.map((elm,i) => (
+                          <Card
+                              id={elm.id}
+                              title={elm.title}
+                              img={elm.image.src}
+                              desc={elm.body_html.replace('<span>', '').replace('</span>', '')}
+                              price={elm.variants[0].price}
+                              varients={elm.variants}
+                              onAddCart={this.addToCart}
+                              key={i}
+                          />
+                      ))}
+                  </div>
                 </div>
-                <div class="d-flex flex-wrap justify-content-center">
-                    {!isLoading && products.map((elm,i) => (
-                        <Card 
-                            title={elm.title} 
-                            img={elm.image.src} 
-                            desc={elm.body_html.replace('<span>', '').replace('</span>', '')}
-                            price={elm.variants[0].price}
-                            key={i} 
-                        />
-                    ))}
-                </div>
-            </Layout>
+                <Cart
+                  show={isVisible}
+                  onClose={this.setModalVisible}
+                  cart={cart}
+                />
+            </div>
         )
     }
 
