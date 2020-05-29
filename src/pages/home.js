@@ -17,20 +17,27 @@ class Home extends Component {
     }
 
     componentDidMount = async() => {
-        const info = await getStore();
+        //const info = await getStore();
         const response = await getAllProducts();
-        this.setState({ products: response.products, isLoading: false});
+        if(response) {
+          this.setState({ products: response.products, isLoading: false});
+        } else {
+          console.log("API disconnected...");
+        }
+
     }
 
     setModalVisible = (visible) => this.setState({isVisible: visible});
 
     addToCart = (product) => this.setState(state => ({cart: [...state.cart, product]}));
 
+    onClearCart = () => this.setState({cart: []});
+
     render() {
         const {products, isLoading, cart, isVisible} = this.state;
         return(
-            <div>
-                <Header onClickCart={this.setModalVisible} />
+            <>
+                <Header onClickCart={this.setModalVisible} quantity={cart.length} />
                 <div className='container'>
                   <div className='d-flex justify-content-center my-5'>
                       <h1>CCI NIKE STORE</h1>
@@ -53,9 +60,10 @@ class Home extends Component {
                 <Cart
                   show={isVisible}
                   onClose={this.setModalVisible}
+                  onClearCart={this.onClearCart}
                   cart={cart}
                 />
-            </div>
+            </>
         )
     }
 

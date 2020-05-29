@@ -2,10 +2,9 @@ import React from 'react';
 import {Button, Modal} from 'react-bootstrap';
 import {createOrder} from '../services/store.service';
 
-const Cart = ({show, cart, onClose}) => {
-
+const Cart = ({show, cart, onClose, onClearCart}) => {
   const handleClose = () => onClose(false);
-
+  const handleClearCart = () => onClearCart();
   const handleValidate = async() => {
     const products = cart.map(elm => ({
       variant_id: elm.id,
@@ -22,21 +21,32 @@ const Cart = ({show, cart, onClose}) => {
         </Modal.Header>
         <Modal.Body>
           <ul className="list-group">
-            {cart && cart.map((elm, i) => (
-              <li className="list-group-item" key={i}>
+            {cart.length > 0 ? (
+              cart.map((elm, i) => (
+                <li className="list-group-item" key={i}>
+                  <div className="d-flex justify-content-between">
+                    <p>{elm.title}</p>
+                    <p>{elm.price} CFP</p>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <li className="list-group-item">
                 <div className="d-flex justify-content-between">
-                  <p>{elm.title}</p>
-                  <p>{elm.price} CFP</p>
+                  <p>Votre panier ne contient aucun article...</p>
                 </div>
               </li>
-            ))}
+            )}
           </ul>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="danger" onClick={handleClearCart}>
+            Clear
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleValidate}>
+          <Button variant="success" onClick={handleValidate}>
             BUY
           </Button>
         </Modal.Footer>
