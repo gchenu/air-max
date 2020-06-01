@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Card from '../components/card';
 import Cart from '../components/cart';
 import Header from '../components/header';
-import {getStore, getAllProducts} from '../services/store.service';
+import {getAllProducts} from '../services/store.service';
 
 class Home extends Component {
 
@@ -17,7 +17,6 @@ class Home extends Component {
     }
 
     componentDidMount = async() => {
-        //const info = await getStore();
         const response = await getAllProducts();
         if(response) {
           this.setState({ products: response.products, isLoading: false});

@@ -17,6 +17,9 @@ export const getAllProducts = () => {
 export const createOrder = (opts) => {
   return fetch(`${HOST}/order`, {
     method: 'post',
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({products: opts})
   })
       .then(res => res.json())
