@@ -20,7 +20,7 @@ export const createOrder = (opts) => {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({products: opts})
+    body: JSON.stringify(opts)
   })
       .then(res => res.json())
       .catch(err => console.log(err))

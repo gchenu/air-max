@@ -10,8 +10,18 @@ const Cart = ({show, cart, onClose, onClearCart}) => {
       variant_id: elm.id,
       quantity: 1
     }));
-    const response = await createOrder(products);
-    console.log(response);
+    const response = await createOrder({
+      order: {
+        line_items: products
+      }
+    });
+    if(response.errors){
+      alert(response.errors);
+    } else {
+      handleClose();
+      handleClearCart();
+      alert('Commande réussie!');
+    }
   }
 
   return(
